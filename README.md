@@ -1,6 +1,6 @@
 # music_project
 
 Tic Tac Toe
-X . .
+X O .
 . O .
 . . .
