@@ -1,5 +1,4 @@
 import requests
-
 import subprocess
 
 
@@ -50,4 +49,6 @@ def convert_to_wav(input_file, output_file):
 
     
 
-    
+#Runs only in the command line
+if __name__ == "__main__":
+    preview_request()
