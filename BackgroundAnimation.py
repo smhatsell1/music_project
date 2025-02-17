@@ -5,55 +5,11 @@ import requests
 import subprocess
 from manim import *
 
+from preview_request import preview_request, convert_to_wav
+
 #run: manim -pql BackgroundAnimation.py colorChanger
 
-def preview_request():
-    '''
-    Gets song
-    '''
-    base_url = "https://api.deezer.com/search"
-
-    query = input("Enter a song title: ")  # Prompt user for input if no query is provided
-
-    print(f"Searching for: {query}")
-    
-    search = requests.get(f"{base_url}?q={query}")
-
-    # Check for valid response
-    if search.status_code == 200:
-        data = search.json()
-
-        #Check if search data is empty
-        if data['data']:
-            track = data['data'][0] # First song in the search
-            
-            preview_url = track['preview'] # Get preview url
-            title = track['title']
-            artist = track['artist']['name']
-            
-            preview_response = requests.get(preview_url) # Retrieve preview from url
-
-            # Check if preview URL was retrieved successfully
-            if preview_response.status_code == 200:
-                # Save the preview as an MP3 file
-                song_preview_file = f"{title}_{artist}_preview.mp3" # Maybe change to be the name of the song title, artist?
-                with open(song_preview_file, 'wb') as f:
-                    f.write(preview_response.content)
-                wav_file = f"{title}_{artist}_preview.wav"
-                convert_to_wav(song_preview_file, wav_file)
-
-                return wav_file
-                print(f"The 30-second preview has been saved as {title}_{artist}_preview.wav.")
-            else:
-                print(f"Failed to download the preview audio. Status Code: {preview_response.status_code}.")
-    else:
-        print(f"Failed to search. Status Code: {search.status_code}")
-
-    return query
-
-def convert_to_wav(input_file, output_file):
-    command = ['ffmpeg', '-i', input_file, output_file]
-    subprocess.run(command)
+#issue: last 3 seconds of animation is constant color
 
 def rgb_to_hex(rgb):
     '''
@@ -72,7 +28,6 @@ def norm_for_color(array):
     return normalized_array
 
 
-
 class colorChanger(Scene):
     def construct(self):
         audio_file_name = preview_request()
@@ -85,9 +40,9 @@ class colorChanger(Scene):
         percent_through_song = beat_times/song_time
 
 
-        num_to_take_from_y_1 = (percent_through_song*y.size).astype(int)
+        num_to_take_from_y_1 = ((percent_through_song-0.02)*y.size).astype(int)
         num_to_take_from_y_2 = ((percent_through_song-0.01)*y.size).astype(int)
-        num_to_take_from_y_3 = ((percent_through_song+0.01)*y.size).astype(int)
+        num_to_take_from_y_3 = ((percent_through_song+0.00)*y.size).astype(int)
 
         # Normalize the audio values to generate RGB color channels
         r = norm_for_color(y[num_to_take_from_y_1]).astype(int)
