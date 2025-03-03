@@ -62,6 +62,7 @@ class colorChanger(Scene):
         for i in range(len(cues)):
             self.wait(cues[i])
             self.camera.background_color = "#"+list_of_colors[i]
+
         
 
 
