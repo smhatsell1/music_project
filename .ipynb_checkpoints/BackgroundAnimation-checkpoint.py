@@ -27,7 +27,6 @@ def norm_for_color(array):
     normalized_array = (array - min_val) / (max_val - min_val) * 255
     return normalized_array
 
-#make just the colors, plus traits of the song, inheritable
 
 class colorChanger(Scene):
     def construct(self):
@@ -54,57 +53,23 @@ class colorChanger(Scene):
         color_list = list(zip_obj)
 
         vectorized_function = np.vectorize(rgb_to_hex, signature='(n)->()')
-        color_sequence = vectorized_function(np.array(color_list))
+        list_of_colors = vectorized_function(np.array(color_list))
 
         cues = np.diff(beat_times)
         
         self.add_sound(audio_file_name)
- 
+
         for i in range(len(cues)):
             self.wait(cues[i])
-            self.camera.background_color = "#"+color_sequence[i]
-
-class ContinuousMotion(colorChanger):
+            self.camera.background_color = "#"+list_of_colors[i]
+class ContinuousMotion(Scene):
     def construct(self):
-        audio_file_name = preview_request()
-        y, sr = librosa.load(audio_file_name)
-
-        tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)
-        beat_times = librosa.frames_to_time(beat_frames, sr=sr)
-
-        song_time = librosa.get_duration(y=y, sr=sr)
-        percent_through_song = beat_times/song_time
-
-
-        num_to_take_from_y_1 = ((percent_through_song-0.02)*y.size).astype(int)
-        num_to_take_from_y_2 = ((percent_through_song-0.01)*y.size).astype(int)
-        num_to_take_from_y_3 = ((percent_through_song+0.00)*y.size).astype(int)
-
-        # Normalize the audio values to generate RGB color channels
-        r = norm_for_color(y[num_to_take_from_y_1]).astype(int)
-        b = norm_for_color(y[num_to_take_from_y_2]).astype(int)
-        g = norm_for_color(y[num_to_take_from_y_3]).astype(int)
-
-        zip_obj = zip(r,b,g)
-        color_list = list(zip_obj)
-
-        vectorized_function = np.vectorize(rgb_to_hex, signature='(n)->()')
-        colors = vectorized_function(np.array(color_list))
-        formatted_colors = ['#' + str(color) for color in colors]
-
-        cues = np.diff(beat_times) # not used
-        
-        speed_factor= tempo/40 
-
         func = lambda pos: np.sin(pos[0] / 2) * UR + np.cos(pos[1] / 2) * LEFT
-        stream_lines = StreamLines(func, stroke_width=3, max_anchors_per_line=30, colors=formatted_colors, 
-            virtual_time=song_time,
-            three_dimensions=False,
-            padding=1)
+        stream_lines = StreamLines(func, stroke_width=2, max_anchors_per_line=30)
         self.add(stream_lines)
-        self.add_sound(audio_file_name)
-        stream_lines.start_animation(warm_up=False, flow_speed=speed_factor)
+        stream_lines.start_animation(warm_up=False, flow_speed=1.5)
         self.wait(stream_lines.virtual_time / stream_lines.flow_speed)
+        
 
 
 

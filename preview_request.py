@@ -1,3 +1,4 @@
+import os
 import requests
 import subprocess
 
@@ -27,11 +28,13 @@ def preview_request():
 
             # Check if preview URL was retrieved successfully
             if preview_response.status_code == 200:
+                if not os.path.exists('songs'):
+                    os.makedirs('songs')
                 # Save the preview as an MP3 file
-                song_preview_file = f"{title}_{artist}_preview.mp3" # Maybe change to be the name of the song title, artist?
+                song_preview_file = f"songs/{title}_{artist}_preview.mp3"
                 with open(song_preview_file, 'wb') as f:
                     f.write(preview_response.content)
-                wav_file = f"{title}_{artist}_preview.wav"
+                wav_file = f"songs/{title}_{artist}_preview.wav"
                 convert_to_wav(song_preview_file, wav_file)
 
                 return wav_file
