@@ -1,0 +1,4 @@
+# This file is used internally by FFMPEG.
+file 'file:/Users/dramaticmay/pic16b/music_project/media/videos/music_project/480p15/partial_movie_files/RemoveObjectExample/1185818338_4071659840_1123484115.mp4'
+file 'file:/Users/dramaticmay/pic16b/music_project/media/videos/music_project/480p15/partial_movie_files/RemoveObjectExample/624642324_2636397248_4131132508.mp4'
+file 'file:/Users/dramaticmay/pic16b/music_project/media/videos/music_project/480p15/partial_movie_files/RemoveObjectExample/624642324_3890345977_2920226365.mp4'
