@@ -5,3 +5,5 @@ Group members: Sophia Hatsell, Caroline Ives, May Jiang
 
 
 Necessary Packages: Manim, Librosa, Requests, FFmpeg
+
+To run: In the command line, type
