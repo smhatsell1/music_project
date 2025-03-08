@@ -6,6 +6,7 @@ import subprocess
 from manim import *
 
 from preview_request import preview_request, convert_to_wav
+from MusicData import *
 
 #run: manim -pql BackgroundAnimation.py colorChanger
 
@@ -26,6 +27,26 @@ def norm_for_color(array):
     
     normalized_array = (array - min_val) / (max_val - min_val) * 255
     return normalized_array
+
+#make just the colors, plus traits of the song, inheritable
+
+
+def direction(pos, note_vectors):
+    # Extract the x and y components from the pos array
+    x_pos, y_pos = pos[0], pos[1]  # Assuming pos is an array like [x, y]
+
+    # Find the closest note in time (based on x_pos)
+    closest_note = min(note_vectors, key=lambda note: abs(note[0] - x_pos))  # Find closest beat time to 'x'
+    
+    note = closest_note[1]  # Note value for the closest beat time
+    beat_time = closest_note[0]  # The corresponding beat time
+
+    # Calculate the direction for the streamlines based on both beat time and note value
+    direction_x = np.sin((beat_time * x_pos)/2) * RIGHT  # Direction in the x-axis
+    direction_y = np.cos((note * y_pos)/2) * UP  # Direction in the y-axis
+
+    # Return the resulting direction vector (combining the two components)
+    return direction_x + direction_y
 
 
 class colorChanger(Scene):
@@ -53,25 +74,45 @@ class colorChanger(Scene):
         color_list = list(zip_obj)
 
         vectorized_function = np.vectorize(rgb_to_hex, signature='(n)->()')
-        list_of_colors = vectorized_function(np.array(color_list))
+        color_sequence = vectorized_function(np.array(color_list))
 
         cues = np.diff(beat_times)
         
         self.add_sound(audio_file_name)
-
+ 
         for i in range(len(cues)):
             self.wait(cues[i])
-            self.camera.background_color = "#"+list_of_colors[i]
+            self.camera.background_color = "#"+color_sequence[i]
+
 class ContinuousMotion(Scene):
     def construct(self):
-        func = lambda pos: np.sin(pos[0] / 2) * UR + np.cos(pos[1] / 2) * LEFT
-        stream_lines = StreamLines(func, stroke_width=2, max_anchors_per_line=30)
-        self.add(stream_lines)
-        stream_lines.start_animation(warm_up=False, flow_speed=1.5)
-        self.wait(stream_lines.virtual_time / stream_lines.flow_speed)
+        audio_file_name = preview_request()
+        y, sr = librosa.load(audio_file_name)
+
+        tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)
+        beat_times = librosa.frames_to_time(beat_frames, sr=sr)
+
+        song_time = librosa.get_duration(y=y, sr=sr)
         
+        notes = extract_notes(y, sr, beat_times)
+        note_vectors = list(zip(beat_times, notes))
+
+        speed_factor= tempo/40 
+
+        stream_lines = StreamLines(lambda pos: direction(pos, note_vectors), stroke_width=3, max_anchors_per_line=40,
+            virtual_time=song_time,
+            three_dimensions=False,
+            padding=1)
+        self.add(stream_lines)
+        self.add_sound(audio_file_name)
+        stream_lines.start_animation(warm_up=False, flow_speed=speed_factor)
+        self.wait(30)
 
 
+# Goal for the animation:
+# Speed = tempo (check)
+# Colors = harmonic/percussive? more harmonic = more blue more percussive = more red?
+# Shape = vector field = notes over time, using note map
 
 
 
