@@ -42,8 +42,8 @@ def direction(pos, note_vectors):
     beat_time = closest_note[0]  # The corresponding beat time
 
     # Calculate the direction for the streamlines based on both beat time and note value
-    direction_x = np.sin((beat_time * x_pos)/2) * RIGHT  # Direction in the x-axis
-    direction_y = np.cos((note * y_pos)/2) * UP  # Direction in the y-axis
+    direction_x = np.sin((note * x_pos)/2) * UR  # Movement up-right
+    direction_y = np.cos((beat_time * y_pos)/2) * LEFT  # movement left
 
     # Return the resulting direction vector (combining the two components)
     return direction_x + direction_y
@@ -110,13 +110,15 @@ class ContinuousMotion(Scene):
 
 
 # Goal for the animation:
-# Speed = tempo (check)
-# Colors = harmonic/percussive? more harmonic = more blue more percussive = more red?
+# Speed = tempo
+# Colors = harmonic/percussive? more harmonic = more blue more percussive = more red? Or volumes
 # Shape = vector field = notes over time, using note map
+# Number of stream lines
+# 
 
 
-
-
+#Possible improvements:
+#Interpolation to fix janky movements
 
 
 

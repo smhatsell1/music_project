@@ -32,14 +32,19 @@ def extract_max_pitches(y, sr, beat_times, duration=0.1):
 
 def extract_notes(y, sr, beat_times, duration=0.1):
     note_map = {
-            'C':1,'C♯':1.5,
-            'D':2,'D♯':2.5,
-            'E':3,
-            'F':4,'F♯':4.5,
-            'G':5,'G♯':5.5,
-            'A':6,'A♯':5.5,
-            'B':7
-        }
+        'C': 1 / 7,      
+        'C♯': 1.5 / 7,  
+        'D': 2 / 7,     
+        'D♯': 2.5 / 7, 
+        'E': 3 / 7,  
+        'F': 4 / 7,     
+        'F♯': 4.5 / 7,  
+        'G': 5 / 7,     
+        'G♯': 5.5 / 7,  
+        'A': 6 / 7,    
+        'A♯': 5.5 / 7,
+        'B': 7 / 7      
+    }
 
     pitches = extract_max_pitches(y, sr, beat_times)
     volumes = extract_max_volume(y, sr, beat_times)
