@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Preview Downloader</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Enter a Song Title for Animation!</h1>
+
+    <form action="/get_preview" method="POST">
+        <label for="song_name">Song Name:</label>
+        <input type="text" id="song_name" name="song_name" required>
+        <button type="submit">Generate Animation</button>
+    </form>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
