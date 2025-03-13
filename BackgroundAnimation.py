@@ -41,9 +41,11 @@ def direction(pos, note_vectors):
     note = closest_note[1]  # Note value for the closest beat time
     beat_time = closest_note[0]  # The corresponding beat time
 
+    note = (note * 2) - 1
+
     # Calculate the direction for the streamlines based on both beat time and note value
-    direction_x = np.sin((note * x_pos)/2) * UR  # Movement up-right
-    direction_y = np.cos((beat_time * y_pos)/2) * LEFT  # movement left
+    direction_x = (note * x_pos) * UP # Movement up-right
+    direction_y = (beat_time * y_pos) * LEFT  # movement left
 
     # Return the resulting direction vector (combining the two components)
     return direction_x + direction_y
@@ -102,7 +104,7 @@ class ContinuousMotion(Scene):
         stream_lines = StreamLines(lambda pos: direction(pos, note_vectors), stroke_width=3, max_anchors_per_line=40,
             virtual_time=song_time,
             three_dimensions=False,
-            padding=1)
+            padding=4)
         self.add(stream_lines)
         self.add_sound(audio_file_name)
         stream_lines.start_animation(warm_up=False, flow_speed=speed_factor)
