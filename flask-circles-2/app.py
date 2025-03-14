@@ -18,7 +18,6 @@ if not os.path.exists(OUTPUT_DIR):
 def index():
     return render_template("index.html")
 
-# Route to handle the form submission
 @app.route('/get_preview', methods=['POST'])
 def get_preview():
     song_name = request.form.get('song_name')
@@ -33,7 +32,6 @@ def get_preview():
     if not video_file_path:
         return "Animation rendering failed.", 500
 
-    # Redirect to the page that will display the animation
     return redirect(url_for('play_animation', video_file=os.path.basename(video_file_path)))
 
 
@@ -47,8 +45,6 @@ def play_animation():
 
     animation_path = f"animations/{video_file}"
 
-
-    # animation_path = video_file
     return render_template('play_animation.html', animation_path=animation_path)
 
 

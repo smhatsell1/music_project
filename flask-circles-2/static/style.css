@@ -5,6 +5,7 @@
     box-sizing: border-box;
 }
 
+/* GENERAL PAGE */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
@@ -21,10 +22,12 @@ h1 {
     font-family: Arial, sans-serif;
     font-size: 2rem;
     color: #2c3e50;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-top: 20px;
 }
 
-/* Styling the form */
+/* FORM PAGE*/
 form {
     background-color: #fff;
     border-radius: 8px;
@@ -37,7 +40,7 @@ form {
     max-width: 400px;
 }
 
-/* Label */
+/* LABELS */
 label {
     font-size: 1rem;
     color: #7f8c8d;
@@ -79,17 +82,21 @@ p {
     margin-top: 10px;
 }
 
-/* Styling the video page */
+/* VIDEO PAGE */
 video {
-    max-width: 100%;
+    max-width: 50%;
     height: auto;
     margin-bottom: 20px;
+    padding: 12px 20px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 a {
     color: #3498db;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1rem;    
+    margin-bottom: 30px;
+    padding-bottom: 20px;
 }
 
 a:hover {

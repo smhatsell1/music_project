@@ -91,7 +91,7 @@ class hsvAnim(Scene):
 
         tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)
         beat_times = librosa.frames_to_time(beat_frames, sr=sr)
-
+        beat_times = np.insert(beat_times, 0, 0) #prevent offset error
         song_time = librosa.get_duration(y=y, sr=sr)
 
         note_map = {
@@ -123,22 +123,33 @@ class hsvAnim(Scene):
 
         vectorized_function = np.vectorize(hsv_to_hex, signature='(n)->()')
         list_of_colors = vectorized_function(np.array(color_list))
-
         cues = np.diff(beat_times)
+        #FOR LATER
+        list_of_colors = [ManimColor.from_hex('#'+color) for color in list_of_colors]
+        # cues = np.diff(beat_times)[np.diff(beat_times) !=0]
         
         self.add_sound(self.song_path)
 
-
+        background = FullScreenRectangle(fill_color=list_of_colors[0],  fill_opacity=1)
+        self.add(background)
+        # for i in range(len(cues)):
+        #     text = Text(f"{beat_times[i]:.2f}", font_size=144)
+        #     text.scale(1 + norm_centroid[i] * 4)  # Expand text size during high frequencies
+        #     self.add(text)
+            
+        #     self.play(FadeToColor(background, color=list_of_colors[i]),run_time=cues[i])
+        #     self.remove(text)
+        # self.wait(3)
+        rad = norm_to_n(S[1:],4)
         for i in range(len(cues)):
-            text = Text(f"{beat_times[i]:.2f}", font_size=144)
-            # text size expands during high frequency sounds 
-            text.scale(1 + norm_centroid[i] * 6)
-            
-            self.add(text)  
-            self.wait(cues[i])
-            self.camera.background_color = "#"+list_of_colors[i]
-            self.remove(text)
-            
+            circle_past = Circle(radius=rad[max(0,i-1)], color=BLACK, stroke_width=10)
+            circle_now = Circle(radius=rad[i]/100*4, color=BLACK, stroke_width=10)
+            # self.add(circle)
+            self.play(FadeToColor(background, color=list_of_colors[i]), 
+                      Transform(circle_past, circle_now),
+                      run_time=cues[i]
+                     )
+            self.remove(circle_past)
         self.wait(3)
         
 
