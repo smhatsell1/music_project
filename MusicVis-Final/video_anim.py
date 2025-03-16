@@ -145,6 +145,10 @@ class circleAnim(Scene):
         pitches = extract_max_pitches(y, sr, beat_times)
         volumes = extract_max_volume(y, sr, beat_times)
 
+        # prevent division by 0 error
+        pitches = pitches[pitches != 0]
+        volumes = volumes[volumes != 0]
+        
         notes = librosa.hz_to_note(pitches, octave=False)
         note_vals = [note_map[note] for note in notes]
 
