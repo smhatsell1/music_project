@@ -1,0 +1,1 @@
+Refer to the README in the root directory of the music_project repo for instructions on how to use this project.
