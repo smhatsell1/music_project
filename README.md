@@ -1,14 +1,14 @@
-# music_project
+# Music Visualization Project
 
 Winter 2025 | PIC 16B | Group Project | Sarah Burnett
 
 **Group members**: Sophia Hatsell, Caroline Ives, May Jiang
 
 ---
-## description
+## Description
 
 ---
-## using the project
+## Using the project
 **Necessary Packages**: Manim, Librosa, Requests, Numpy. 
 
 These may installed using a package manager of your choice. See the versions below:
