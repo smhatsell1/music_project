@@ -183,11 +183,14 @@ class circleAnim(Scene):
             # define previous circle
             circle_past = Circle(radius=rad[max(0,i-1)], color=BLACK, stroke_width=10)
             
-            #define next circle
+            # define next circle
             circle_now = Circle(radius=rad[i]/100*4, color=BLACK, stroke_width=10)
+            # prevent vanishing circle
+            if list_of_colors[i].to_hsv()[2] <= 0.2:
+                circle_now = Circle(radius=rad[i]/100*4, color=WHITE, stroke_width=10)
 
             self.play(FadeToColor(background, color=list_of_colors[i]), #smoothly change background
                       Transform(circle_past, circle_now), #change circle size
-                      run_time=cues[i] #take time to run
+                      run_time=cues[i] #set time to run
                      )
             self.remove(circle_past) #remove previous circle
