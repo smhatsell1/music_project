@@ -4,17 +4,16 @@ import os
 # Function to download the song preview (30 seconds) from Deezer API
 def preview_request(song_name=None): 
     """Searches for a song by title and downloads a 30-second preview as an MP3 file.
-
     If no song title is provided, prompts the user to enter one. The function fetches 
     track data from the Deezer API, retrieves the preview URL, and saves the audio 
     preview to a local file in the 'static/songs' directory.
-
     @params:
     song_name (str): The title of the song to search for. If None, the user will be prompted for input.
 
     @returns:
     str: The path to the saved MP3 preview file.
     """
+    # Create base URL for Deezer
     base_url = "https://api.deezer.com/search"
 
     # Prompt user for input if no query is provided
@@ -25,14 +24,14 @@ def preview_request(song_name=None):
 
     print(f"Searching for: {query}")
 
-    #Make API request
+    # Make API request
     search = requests.get(f"{base_url}?q={query}")
 
     # Check for valid response
     if search.status_code == 200:
         data = search.json()
 
-        #Check if data is empty
+        # Check if data is empty
         if data['data']:
             # Get first song in the search
             track = data['data'][0]
@@ -55,7 +54,7 @@ def preview_request(song_name=None):
                 with open(output_file, 'wb') as f:
                     f.write(preview_response.content)
                 
-                #Informative String
+                # Informative String
                 print(f"The 30-second preview has been saved as {title}_{artist}_preview.mp3 in static/songs.")
             else:
                 print("Failed to download the preview audio.")
