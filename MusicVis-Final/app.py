@@ -10,12 +10,6 @@ from generate_anim import render_manim_scene
 app = Flask(__name__)
 
 
-# Folder to store the MP4 video
-OUTPUT_DIR = "static/animations"
-if not os.path.exists(OUTPUT_DIR):
-    os.makedirs(OUTPUT_DIR)
-
-
 #HOME PAGE
 @app.route("/", methods=["GET", "POST"])
 def index():
