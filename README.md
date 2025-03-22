@@ -7,7 +7,7 @@ Winter 2025 | PIC 16B | Group Project | Sarah Burnett
 ---
 ## Description
 
-This project is designed to create music visualizations using audio data.
+    This project is designed to create music visualizations using audio data. The code prompts a user for a song title and downloads a 30-second preview clip from Deezer. Then, it uses Librosa to determine the songs pitches, tempo and volumes. This data is used to encode a short animation, where colors change and a circle shifts and grows corresponding to the music. The final products is integrated with Flask to make a dynamic website.
 ---
 ## Using the project
 **Necessary Packages**: Manim, Librosa, Requests, Numpy, Flask . 
