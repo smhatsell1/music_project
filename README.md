@@ -7,6 +7,7 @@ Winter 2025 | PIC 16B | Group Project | Sarah Burnett
 ---
 ## Description
 
+This project is designed to create music visualizations using audio data.
 ---
 ## Using the project
 **Necessary Packages**: Manim, Librosa, Requests, Numpy, Flask . 
